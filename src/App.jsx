@@ -4,11 +4,10 @@ import './App.css'
 
 function App() {
 const [inputValue, setInputValue] = useState("")
-const [summonerData, setSummonerData] = useState({})
-console.log('iam data',summonerData)
-const key = 'RGAPI-bba63c52-cc78-4f65-9ec0-0bf86ba9f789'
+const [summonerData, setSummonerData] = useState('')
 
-//pegar as variaveis no env
+const key = 'RGAPI-bba63c52-cc78-4f65-9ec0-0bf86ba9f789'
+const api = 'https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-name/'
 
 async function getSummoner() {
     const searchSummoner = `${api}${inputValue}?api_key=${key}`
@@ -20,8 +19,7 @@ async function getSummoner() {
 useEffect(() => {
   getSummoner()
 }, []);
-
-console.log('test',summonerData);
+console.log('XDDDD', summonerData)
 
 return (
   <div className="App">
@@ -29,21 +27,23 @@ return (
       <h6>SEARCH SUMMONER LEAGUE OF LEGENDS</h6>
       <input type="text" onChange={e => setInputValue(e.target.value)}/>
       <button onClick={e => getSummoner(e)}> search </button>
-      {!summonerData
+      {summonerData.length > 0
       ? 
-      <p>DONT HAVE PLAYER</p>
+        <p>DONT HAVE PLAYER</p>
       : 
-      <div className="container-content">
-      <h2>Nick: {summonerData.name}</h2>
-      <p>Level Account: {summonerData.summonerLevel}</p>
-      {summonerData.profileIconId
-      ? 
-      <img src={`http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${summonerData.profileIconId}.png`}/>
-      :
-      <p></p>
+        <p>GREAT HAVE PLAYER</p>
       }
-    </div>
-    }
+        {summonerData.name
+        ? 
+          <div className="container-content">
+            <h2>Nick: {summonerData.name}</h2>
+            <p>Level Account: {summonerData.summonerLevel}</p>
+            <img src={`http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${summonerData.profileIconId}.png`}/>
+          </div>
+        :
+          <p></p>
+        }
+  
       
     </div>
     
